@@ -24,10 +24,5 @@ function protect_user() {
     }
 }
 
-/**
- * Global Helper: Sanitization
- */
-function escape($conn, $data) {
-    return mysqli_real_escape_string($conn, htmlspecialchars($data));
-}
+
 ?>
