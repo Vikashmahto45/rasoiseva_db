@@ -1,6 +1,6 @@
 <?php
 /**
- * RasoiSeva - Unified Authentication Gateway
+ * RasoiSeva v2.0 - Multi-Tenant Auth Gateway
  */
 require_once 'includes/config.php';
 require_once 'includes/session.php';
@@ -9,13 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = escape($conn, $_POST['username']);
     $password = $_POST['password'];
 
-    if (empty($username) || empty($password)) {
-        set_flash_message("Please fill all fields.");
-        header("Location: login.php");
-        exit;
-    }
-
-    // 1. Check Super Admin Table First
+    // 1. Check Super Admin Table
     $stmt = $conn->prepare("SELECT id, password FROM super_admins WHERE username = ? LIMIT 1");
     $stmt->bind_param("s", $username);
     $stmt->execute();
@@ -42,16 +36,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (password_verify($password, $user['password'])) {
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['tenant_id'] = $user['tenant_id'];
-            $_SESSION['outlet_id'] = $user['outlet_id'];
             $_SESSION['username'] = $username;
             $_SESSION['role'] = $user['role'];
-            
             header("Location: client/dashboard.php");
             exit;
         }
     }
 
-    set_flash_message("Invalid username or password.");
+    $_SESSION['login_error'] = "Authentication failed. Access denied.";
     header("Location: login.php");
     exit;
 

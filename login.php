@@ -1,85 +1,63 @@
 <?php
 /**
- * RasoiSeva - Unified Login Portal
+ * RasoiSeva v2.0 - Elite Unified Login Portal
  */
 require_once 'includes/config.php';
-require_once 'includes/session.php';
+require_once 'includes/session.php'; // I'll recreate this next
 
-// Redirect if already logged in
-if (isset($_SESSION['super_admin_id'])) {
-    header("Location: admin/dashboard.php");
-    exit;
-}
-if (isset($_SESSION['user_id'])) {
-    header("Location: client/dashboard.php");
-    exit;
-}
-
-$error = get_flash_message();
+$error = (isset($_SESSION['login_error'])) ? $_SESSION['login_error'] : null;
+unset($_SESSION['login_error']);
 ?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - RasoiSeva</title>
-    <link rel="stylesheet" href="assets/css/main.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <title>RasoiSeva - Enterprise Login</title>
+    <!-- Use versioning for fresh CSS load -->
+    <link rel="stylesheet" href="assets/css/v2_style.css?v=<?php echo time(); ?>">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="login-body">
-    <div class="login-container">
-        <div class="login-box glass">
-            <div class="login-header">
-                <div class="logo">
-                    <i class="fas fa-utensils"></i>
-                    <span>Rasoi<span>Seva</span></span>
+<body>
+    <section class="login-screen">
+        <div class="login-card glass-effect emerald-glow">
+            <div class="brand-identity">
+                <div class="brand-icon">
+                    <i class="fas fa-crown"></i>
                 </div>
-                <h1>Welcome Back</h1>
-                <p>Please enter your credentials to continue</p>
+                <h1>Rasoi<span>Seva</span></h1>
+                <p>Advanced Restaurant Management v2.0</p>
             </div>
 
             <?php if ($error): ?>
-                <div class="alert alert-error">
-                    <i class="fas fa-exclamation-circle"></i> <?php echo $error; ?>
+                <div style="background: rgba(239, 68, 68, 0.1); color: #ef4444; padding: 15px; border-radius: 12px; margin-bottom: 25px; font-size: 0.9rem;">
+                    <i class="fas fa-circle-exclamation"></i> <?php echo $error; ?>
                 </div>
             <?php endif; ?>
 
-            <form action="auth_gateway.php" method="POST" class="login-form">
-                <div class="form-group">
-                    <label for="username">Username / Email</label>
-                    <div class="input-with-icon">
-                        <i class="fas fa-user"></i>
-                        <input type="text" id="username" name="username" placeholder="Enter your username" required>
-                    </div>
+            <form action="auth_gateway.php" method="POST" class="form-v2">
+                <div class="input-container">
+                    <label>Identification</label>
+                    <input type="text" name="username" class="input-field" placeholder="Username or Email" required autocomplete="off">
                 </div>
 
-                <div class="form-group">
-                    <label for="password">Password</label>
-                    <div class="input-with-icon">
-                        <i class="fas fa-lock"></i>
-                        <input type="password" id="password" name="password" placeholder="Enter your password" required>
-                    </div>
+                <div class="input-container">
+                    <label>Master Security Key</label>
+                    <input type="password" name="password" class="input-field" placeholder="••••••••" required>
                 </div>
 
-                <div class="login-options">
-                    <label class="remember-me">
-                        <input type="checkbox" name="remember">
-                        <span>Remember me</span>
-                    </label>
-                    <a href="forgot-password.php" class="forgot-link">Forgot Password?</a>
-                </div>
-
-                <button type="submit" class="btn btn-primary btn-block">
-                    <span>Sign In</span>
-                    <i class="fas fa-arrow-right"></i>
+                <button type="submit" class="btn-v2">
+                    <span>Access Workspace</span>
+                    <i class="fas fa-chevron-right"></i>
                 </button>
             </form>
 
-            <div class="login-footer">
-                <p>&copy; <?php echo date('Y'); ?> RasoiSeva System. All rights reserved.</p>
+            <div style="margin-top: 30px;">
+                <p style="color: var(--text-muted); font-size: 0.8rem;">
+                    &copy; <?php echo date('Y'); ?> GlobalWebify Systems.
+                </p>
             </div>
         </div>
-    </div>
+    </section>
 </body>
 </html>
