@@ -1,89 +1,76 @@
 <?php
 /**
- * RasoiSeva v2.0 - Executive Governance Dashboard
+ * RasoiSeva v3.0 - Executive Overview Console
  */
 $page_title = "Executive Overview";
 $active_page = "dashboard";
 require_once 'includes/header.php';
 require_once '../includes/config.php';
 
-// Fetch Global Statistics
+// Data Aggregation
 $tenant_count = $conn->query("SELECT id FROM tenants")->num_rows;
 ?>
 
-<!-- Statistics Ecosystem -->
-<div class="dashboard-grid animate-fade">
-    <div class="card glass-effect emerald-glow">
-        <label class="input-container" style="color:var(--brand-primary); font-size:0.75rem; letter-spacing:1px; font-weight:800;">ACTIVE ENTERPRISES</label>
-        <div style="font-size: 2.8rem; font-weight: 900; margin-top: 5px;"><?php echo $tenant_count; ?></div>
-        <p style="color:var(--text-muted); font-size:0.85rem; margin-top:10px;">Total Onboarded Partners</p>
+<div class="stat-grid">
+    <!-- Partner Count -->
+    <div class="stat-card">
+        <p class="stat-label">TOTAL PARTNERS</p>
+        <div class="stat-value"><?php echo $tenant_count; ?></div>
+        <p style="font-size: 0.8rem; color: var(--success); font-weight: 600; margin-top: 8px;">
+            <i class="fas fa-arrow-up"></i> Registered Active
+        </p>
     </div>
 
-    <div class="card glass-effect">
-        <label class="input-container" style="color:var(--status-warning); font-size:0.75rem; letter-spacing:1px; font-weight:800;">REVENUE PIPELINE</label>
-        <div style="font-size: 2.8rem; font-weight: 900; margin-top: 5px;">₹0.00</div>
-        <p style="color:var(--text-muted); font-size:0.85rem; margin-top:10px;">Monthly Recurring Revenue</p>
+    <!-- Revenue -->
+    <div class="stat-card">
+        <p class="stat-label">MONTHLY REVENUE</p>
+        <div class="stat-value">₹0.00</div>
+        <p style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600; margin-top: 8px;">
+            Projected Pipeline
+        </p>
     </div>
 
-    <div class="card glass-effect">
-        <label class="input-container" style="color:var(--brand-primary); font-size:0.75rem; letter-spacing:1px; font-weight:800;">SYSTEM INTEGRITY</label>
-        <div style="font-size: 2.8rem; font-weight: 900; margin-top: 5px; color:var(--status-success);">100%</div>
-        <p style="color:var(--text-muted); font-size:0.85rem; margin-top:10px;">Real-time Health Monitor</p>
+    <!-- Health -->
+    <div class="stat-card">
+        <p class="stat-label">SYSTEM UPTIME</p>
+        <div class="stat-value" style="color: var(--success);">100%</div>
+        <p style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600; margin-top: 8px;">
+            Operational Health
+        </p>
     </div>
 </div>
 
-<div style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px; margin-top: 40px;" class="animate-fade">
-    <!-- Live Partner Feed -->
-    <div class="table-container glass-effect">
-        <div class="table-header jcsb aic flex">
-            <div>
-                <h3 style="font-weight: 800;">Recent Partnerships</h3>
-                <p style="color: var(--text-muted); font-size: 0.85rem;">Chronological onboarding records</p>
-            </div>
-            <a href="tenants.php" class="btn-v2" style="padding: 10px 20px; font-size: 0.8rem; width: auto;">
-                <span>View Full Registry</span>
-            </a>
+<div style="margin-top: 40px; display: grid; grid-template-columns: 2fr 1fr; gap: 30px;">
+    <!-- Recent Registry -->
+    <div style="background: white; border-radius: 12px; border: 1px solid var(--border); overflow: hidden;">
+        <div style="padding: 20px 24px; border-bottom: 2px solid var(--bg-body); display: flex; justify-content: space-between; align-items: center;">
+            <h3 style="font-size: 1.1rem;">Recent Registry</h3>
+            <a href="tenants.php" style="font-size: 0.85rem; color: var(--primary); font-weight: 700; text-decoration: none;">View All Registry</a>
         </div>
         
-        <table class="data-table">
-            <thead>
-                <tr>
-                    <th>Enterprise Client</th>
-                    <th>Headquarters</th>
-                    <th>Identity</th>
-                    <th>Status</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php if ($tenant_count == 0): ?>
-                    <tr>
-                        <td colspan="4" style="text-align: center; padding: 60px; color: var(--text-muted);">
-                            <i class="fas fa-inbox" style="font-size: 2rem; margin-bottom: 15px; display: block; opacity: 0.3;"></i>
-                            No partnerships established yet.
-                        </td>
-                    </tr>
-                <?php endif; ?>
-            </tbody>
-        </table>
+        <div style="padding: 40px; text-align: center;">
+            <div style="width: 60px; height: 60px; background: #f8fafc; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; color: var(--text-muted); margin-bottom: 15px;">
+                <i class="fas fa-folder-open" style="font-size: 1.5rem;"></i>
+            </div>
+            <p style="color: var(--text-muted); font-size: 0.95rem;">No partner data available in this view.</p>
+        </div>
     </div>
 
-    <!-- Rapid Operations Container -->
-    <div class="card glass-effect" style="border-color: var(--brand-primary-glow);">
-        <h3 style="font-weight: 800; margin-bottom: 25px; border-bottom: 1px solid var(--border-soft); padding-bottom: 15px;">Rapid Operations</h3>
+    <!-- Rapid Operations Card -->
+    <div style="background: white; border-radius: 12px; border: 1px solid var(--border); padding: 24px;">
+        <h3 style="font-size: 1rem; margin-bottom: 25px;">Rapid Operations</h3>
         
-        <a href="add_tenant.php" class="btn-v2" style="margin-bottom: 15px;">
-            <i class="fas fa-plus-circle"></i>
-            <span>Add New Restaurant</span>
+        <a href="add_tenant.php" class="btn-primary" style="display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 12px; text-decoration: none;">
+            <i class="fas fa-plus"></i> Add New Enterprise
         </a>
         
-        <a href="modules.php" class="btn-v2" style="background: var(--bg-dark-950); border: 1px solid var(--border-soft); color: white;">
-            <i class="fas fa-microchip"></i>
-            <span>Engine Configuration</span>
+        <a href="modules.php" style="display: flex; align-items: center; justify-content: center; gap: 10px; padding: 12px; border: 1px solid var(--border); border-radius: 8px; color: var(--text-main); font-weight: 600; font-size: 0.95rem; text-decoration: none;">
+            <i class="fas fa-cog"></i> Engine Configuration
         </a>
-        
-        <div style="margin-top: 30px; padding: 20px; border-radius: 18px; background: rgba(16, 185, 129, 0.05); border: 1px dashed var(--border-vibrant);">
-            <p style="font-size: 0.85rem; color: var(--brand-primary); font-weight: 600;">System Insight</p>
-            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 5px;">Your multi-tenant architecture is currently synchronized with Hostinger servers.</p>
+
+        <div style="margin-top: 30px; padding: 15px; background: #eff6ff; border-radius: 10px; border-left: 4px solid var(--primary);">
+            <p style="font-size: 0.85rem; color: var(--primary); font-weight: 800; margin-bottom: 5px;">SYSTEM INSIGHT</p>
+            <p style="font-size: 0.8rem; line-height: 1.4; color: var(--text-main);">Project v3.0 is optimized for multi-tenant high-availability operations.</p>
         </div>
     </div>
 </div>

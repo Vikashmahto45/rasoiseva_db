@@ -1,11 +1,11 @@
 <?php
 /**
- * RasoiSeva v2.0 - Clean Multi-Tenant Middleware
+ * RasoiSeva v3.0 - Enterprise Session Middleware
  */
 session_start();
 
 /**
- * Protect Super Admin Routes
+ * Super Admin Middleware
  */
 function protect_super_admin() {
     if (!isset($_SESSION['super_admin_id'])) {
@@ -15,7 +15,7 @@ function protect_super_admin() {
 }
 
 /**
- * Protect Restaurant Staff Routes
+ * Restaurant Staff Middleware
  */
 function protect_user() {
     if (!isset($_SESSION['user_id'])) {
@@ -24,5 +24,10 @@ function protect_user() {
     }
 }
 
-
+/**
+ * Auth Flash Messaging Helper
+ */
+function set_auth_error($msg) {
+    $_SESSION['auth_error'] = $msg;
+}
 ?>

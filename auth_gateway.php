@@ -1,6 +1,6 @@
 <?php
 /**
- * RasoiSeva v2.0 - Multi-Tenant Auth Gateway
+ * RasoiSeva v3.0 - Unified Auth Gateway
  */
 require_once 'includes/config.php';
 require_once 'includes/session.php';
@@ -9,7 +9,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = escape($conn, $_POST['username']);
     $password = $_POST['password'];
 
-    // 1. Check Super Admin Table
+    if (empty($username) || empty($password)) {
+        set_auth_error("Please enter credentials to continue.");
+        header("Location: login.php");
+        exit;
+    }
+
+    // 1. Authenticate Super Admin
     $stmt = $conn->prepare("SELECT id, password FROM super_admins WHERE username = ? LIMIT 1");
     $stmt->bind_param("s", $username);
     $stmt->execute();
@@ -25,8 +31,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    // 2. Check Restaurant Users Table
-    $stmt = $conn->prepare("SELECT id, tenant_id, outlet_id, password, role FROM users WHERE username = ? AND status = 1 LIMIT 1");
+    // 2. Authenticate Restaurant Staff
+    $stmt = $conn->prepare("SELECT id, tenant_id, password, role FROM users WHERE username = ? AND status = 1 LIMIT 1");
     $stmt->bind_param("s", $username);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -43,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
     }
 
-    $_SESSION['login_error'] = "Authentication failed. Access denied.";
+    set_auth_error("Invalid credentials. Please verify and try again.");
     header("Location: login.php");
     exit;
 
