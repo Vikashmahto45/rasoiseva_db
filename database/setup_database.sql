@@ -174,4 +174,4 @@ CREATE TABLE IF NOT EXISTS customers (
 );
 
 -- Initial Admin for testing (Password: admin123)
--- INSERT INTO super_admins (username, password) VALUES ('admin', '$2y$10$7vN5/f6eOey57uH6B8q9.uH5rQ1Zp7l.i1v7kY6f1.yO/l9t2u2m.');
+INSERT INTO super_admins (username, password) VALUES ('admin', '$2y$10$7vN5/f6eOey57uH6B8q9.uH5rQ1Zp7l.i1v7kY6f1.yO/l9t2u2m.');
